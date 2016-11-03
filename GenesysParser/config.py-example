@@ -1,0 +1,12 @@
+# MySQL database information
+host = 'hostname'
+port = 3306  # 3306 is the default MySQL server port
+db = 'database_name'
+user = 'username'
+passwd = 'password'
+
+
+# POST request information
+url = 'https://www.genesys-pgr.org/'  # Base site URL
+clientID = 'clientID'
+clientSecret = 'clientSecret'
