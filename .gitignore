@@ -1,6 +1,11 @@
 # Sensitive
 GenesysParser/config.py
 
+# Generated files
+GenesysParser/info.log
+GenesysParser/errors.log
+GenesysParser/debug.log
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
