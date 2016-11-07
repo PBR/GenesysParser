@@ -29,7 +29,7 @@ def main():
     r = GenesysRequest(query_params)
 
     # example: fetching pages one by one
-    fetch_one_by_one = False
+    fetch_one_by_one = True
     if fetch_one_by_one:
         currPage = 1
         while not r.last:
@@ -38,10 +38,13 @@ def main():
             genesysEntries += copy.deepcopy(r.results)
             if currPage == 4: break  # use only for debugging
             currPage += 1
+            # Fetch only 3 out of 333 pages!
+            if currPage == 4: break
 
     # example: fetching all pages at once
-    fetch_all_at_once = True
+    fetch_all_at_once = False
     if fetch_all_at_once:
+        # WARNING: many pages!
         genesysEntries = r.fetchAll()
 
     for result_item in genesysEntries:

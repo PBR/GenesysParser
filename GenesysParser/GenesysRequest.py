@@ -86,7 +86,7 @@ class GenesysRequest(object):
             GenesysRequest.log.info('Current page: %d' % currentPage)
             entries += copy.deepcopy(self.submitReq(page=currentPage))
             currentPage += 1
-            break  # use for debugging
+            # break  # use for debugging
         self.results = copy.deepcopy(entries)
         return self.results
 
