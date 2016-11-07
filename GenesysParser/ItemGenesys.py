@@ -7,15 +7,25 @@ from logger import *
 
 
 class ItemGenesys(object):
+    """
+        A single accession, as provided by Genesys. The Multicrop Passport
+        Descriptor is used by the API, and is accessible as-is through the
+        'item' class field.
+        The most commonly used attributes are stored in separate fields,
+        for ease of access and brevity. Theses are:
+        [genesysUUID, acqDate, accessionID, collectionDate, genus, species,
+        collSite, instituteCode, aliases].
+    """
+
     log = logging.getLogger(__name__)
 
     def __init__(self, item):
-        """ Get dict. The fields to be extracted follow. """
+        """
+            Get MCPD dictionary. The fields to be extracted follow.
+            :param item: dict
+        """
 
-        # The item field holds the entire MCPD as provided by Genesys.
-        # The fields assigned to a separate class attribute are only the
-        # ones that are used more commonly, for ease of access and brevity.
-        self.item = copy.deepcopy(item)
+        self.full = copy.deepcopy(item)
 
         self.genesysUUID = item['uuid']
         self.acqDate = item['acqDate']
@@ -48,6 +58,10 @@ class ItemGenesys(object):
             self.aliases = tuple()
 
     def __repr__(self):
+        """
+            Print the most commonly used attributes of the item.
+            :return: string
+        """
         temp_aliases = [self.cleanUnprintables(x) for x in self.aliases]
         if temp_aliases != self.aliases:
             self.encodingIssues = True
@@ -60,7 +74,14 @@ class ItemGenesys(object):
 
     @staticmethod
     def parseDate(tempDate):
-        """ Parse a Genesys date string and return it as a Date. """
+        """
+            Parse a Genesys date string and return it as a Date.
+            Things to consider are zero values for months and days,
+            or months/days represented as --. In these cases, a default
+            date of '0101' is attributed.
+            :param tempDate: string
+            :return date: datetime.date
+        """
         if tempDate is None:
             tempDate = '00010101'
         elif tempDate[4:6] in ['00', '--']:
@@ -72,4 +93,9 @@ class ItemGenesys(object):
 
     @staticmethod
     def cleanUnprintables(dirty):
+        """
+            Remove characters that the terminal cannot print.
+            :param dirty: string
+            :return: string
+        """
         return re.sub('[^\s!-~]', '', dirty)
