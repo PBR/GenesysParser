@@ -76,6 +76,11 @@ Further information about these fields can be found
 Additionally, the institute codes, among other details, can be found on the 
 [WIEWS homepage](http://www.fao.org/wiews-archive/wiewspage.jsp?i_l=@@&show=DownloadinstEN.jsp).
 
+Don't forget to include the class:
+```python
+from GenesysRequest import GenesysRequest
+```
+
 Using the above, the query parameters for a few types of tomato, at the institutes
  as seen below would be:
 ```python
