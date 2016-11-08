@@ -1,0 +1,3 @@
+include README.md
+include GenesysParser/logging.json
+include GenesysParser/config.py-example

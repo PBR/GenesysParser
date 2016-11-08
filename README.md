@@ -11,12 +11,15 @@ Libraries required:
 
 * requests (`pip install requests`)
 
+The module as well as its dependencies can also be installed with `python setup.py install`.
+Before doing this, the basic configuration must be provided (see [step 1](#user-content-1-providing-the-basic-configuration-settings) below).
+
 ## Example use
 
-The file `main.py` showcases the use of the GenesysRequest class. The
+The file `main.py` showcases the use of the GenesysParser class. The
 steps to follow are outlined below.
 
-### 1. Providing the basic configuration
+### 1. Providing the basic configuration settings
 A template file titled `config.py-example` can be edited for this purpose, to 
 produce `config.py`. The parameters that must be specified are:
 
@@ -77,7 +80,7 @@ Additionally, the institute codes, among other details, can be found on the
 
 Don't forget to include the class:
 ```python
-from GenesysRequest import GenesysRequest
+from GenesysParser import *
 ```
 
 Using the above, the query parameters for a few types of tomato, at the institutes
@@ -100,7 +103,7 @@ query_params = \
 Following the definition of the query parameters, instantiation of the class
 is simple:
 ```python
-r = GenesysRequest(query_params)
+r = GenesysParser(query_params)
 ```
 
 ### 3. Submitting the query
@@ -163,7 +166,7 @@ ItemGenesys(accessionID=PI 100697, collectionDate=1932-06-28, otherNames=[321], 
 ```
 
 
-Further examples can be found at the end of `GenesysRequest.py`.
+Further examples can be found at the end of `GenesysParser.py`.
 
 ### Side notes
 #### Logging

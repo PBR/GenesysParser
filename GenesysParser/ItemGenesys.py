@@ -3,7 +3,7 @@
 import copy
 from datetime import datetime
 import re
-from logger import *
+from .logger import *
 
 
 class ItemGenesys(object):

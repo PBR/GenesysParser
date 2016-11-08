@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import config
 import requests
 import copy
-from ItemGenesys import ItemGenesys
-from logger import *
+from .ItemGenesys import ItemGenesys
+from .logger import *
+from . import config
 
 
 class GenesysParser(object):
