@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import copy
 from logger import *
-from GenesysRequest import GenesysRequest
+from GenesysParser import GenesysParser
 
 
 def main():
@@ -26,7 +26,7 @@ def main():
                                      'pimpinellifolium', 'peruvianum'],
         }
     genesysEntries = list()
-    r = GenesysRequest(query_params)
+    r = GenesysParser(query_params)
 
     # example: fetching pages one by one
     fetch_one_by_one = True

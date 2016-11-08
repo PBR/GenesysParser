@@ -7,7 +7,7 @@ from ItemGenesys import ItemGenesys
 from logger import *
 
 
-class GenesysRequest(object):
+class GenesysParser(object):
     """
         A class responsible for defining and submitting a query to the
         Genesys API, and then fetching the results.
@@ -21,7 +21,7 @@ class GenesysRequest(object):
             :param page: int
             :param size: int
         """
-        GenesysRequest.log.warning('genesys')
+        GenesysParser.log.warning('genesys')
         self.body = {'filter': json.dumps(cFilter)}
         self.url = (config.url + ('/' if config.url[-1] != '/' else '') +
                     'webapi/v0/acn/filter?client_id=' +
@@ -60,12 +60,12 @@ class GenesysRequest(object):
             entries = copy.deepcopy(response['content'])
             self.results = [ItemGenesys(x) for x in entries]
             self.last = response['last']
-            GenesysRequest.log.info('Genesys request - total pages: %d' %
+            GenesysParser.log.info('Genesys request - total pages: %d' %
                                     self.totalPages)
-            GenesysRequest.log.info('Genesys request - total elements: %d' %
+            GenesysParser.log.info('Genesys request - total elements: %d' %
                                     self.totalElements)
         except KeyError:
-            GenesysRequest.log.warning('No results.')
+            GenesysParser.log.warning('No results.')
             self.totalElements, self.totalPages, self.results = 0, 0, list()
         return self.results
 
@@ -78,12 +78,13 @@ class GenesysRequest(object):
         """
         entries = copy.deepcopy(self.submitReq(page=1))
         currentPage = 2
-        GenesysRequest.log.info('Genesys request - total pages: %d' % \
+        GenesysParser.log.info('Genesys request - total pages: %d' % \
                                 self.totalPages)
-        GenesysRequest.log.info('Genesys request - total elements: %d' % \
+        GenesysParser.log.info('Genesys request - total elements: %d' % \
                                 self.totalElements)
+        self.last = False
         while not self.last:
-            GenesysRequest.log.info('Current page: %d' % currentPage)
+            GenesysParser.log.info('Current page: %d' % currentPage)
             entries += copy.deepcopy(self.submitReq(page=currentPage))
             currentPage += 1
             # break  # use for debugging
@@ -95,14 +96,14 @@ if __name__ == '__main__':
     # params = {'acceNumb': ['PI 340908']}
     params = {'crop': ['tomato']}
     if 0:
-        a = GenesysRequest(params)
+        a = GenesysParser(params)
         # Fetch page 1 and limit to 10 results
         a.submitReq(size=10, page=1)
         for item in a.results:
-            GenesysRequest.log.debug(item)
+            GenesysParser.log.debug(item)
 
     if 1:
-        a = GenesysRequest(params)
+        a = GenesysParser(params)
         for x in a.fetchAll():
             print(x)
         print(len(a.results))

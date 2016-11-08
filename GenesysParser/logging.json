@@ -41,7 +41,7 @@
             "level": "DEBUG",
             "propagate": true
         },
-        "GenesysRequest": {
+        "GenesysParser": {
             "level": "DEBUG",
             "propagate": true
         },
