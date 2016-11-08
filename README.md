@@ -177,5 +177,5 @@ The `curl` command to directly query the Genesys API using a
 ```sh
 curl -H 'Content-Type: application/json' -H 'Referer: http://ecpgr.cgn.wur.nl/eupotato/test.html' -X POST -d '{"filter": "{\"acceNumb\":[\"PI 100697\"]}"}' 'https://sandbox.genesys-pgr.org/webapi/v0/acn/filter?client_id=clientID&client_secret=clientSecret'
 ```
-and produce a result like [this](https://github.com/PBR/GenesysParser/tree/master/MCPD_Genesys_example.json).
+and produce a result like [this](https://github.com/PBR/GenesysParser/blob/master/GenesysParser/MCPD_Genesys_example.json).
 
