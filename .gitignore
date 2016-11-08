@@ -6,6 +6,9 @@ GenesysParser/info.log
 GenesysParser/errors.log
 GenesysParser/debug.log
 
+# PyCharm files
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

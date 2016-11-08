@@ -2,7 +2,7 @@
 
 This project acts as an intermediate layer between the Genesys PGR API 
 and an application that utilises its data. It is intended to both facilitate 
-the query setup, as well as automate a bit part of the response collection.
+the query setup, as well as automate a big part of the response collection.
 
 ## Requirements
 
