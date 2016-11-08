@@ -1,13 +1,12 @@
 # GenesysParser
 
 This project acts as an intermediate layer between the Genesys PGR API 
-and an application that utilises its data. It is intended to facilitate 
-both the query setup, as well as automate the collection of the full 
-response to it.
+and an application that utilises its data. It is intended to both facilitate 
+the query setup, as well as automate a bit part of the response collection.
 
 ## Requirements
 
-The project runs on Python 2.7+ and Python 3.3.  
+The project runs on Python 2.7+ and Python 3.2+.  
 Libraries required:
 
 * requests (`pip install requests`)
@@ -143,7 +142,7 @@ For example, it is possible to print all accession IDs of the results in the two
 
 ```python
 for result_item in r.fetchAll():
-    print(result_item.full['acceNumb']
+    print(result_item.full['acceNumb'])
 ```
 
 or
