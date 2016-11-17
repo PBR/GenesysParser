@@ -5,6 +5,7 @@ GenesysParser/config.py
 GenesysParser/info.log
 GenesysParser/errors.log
 GenesysParser/debug.log
+GenesysParser/results.txt
 
 # PyCharm files
 .idea/
