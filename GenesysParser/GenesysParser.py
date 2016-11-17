@@ -121,7 +121,7 @@ class GenesysParser(object):
                 results += copy.deepcopy(resp_json['content'])
                 self.last = resp_json['last']
                 currentPage += 1
-                if currentPage == 5: break
+                # if currentPage == 5: break  # only for debugging
             except KeyError:
                 GenesysParser.log.info('No results.')
                 self.totalElements, self.totalPages, results = 0, 0, list()
