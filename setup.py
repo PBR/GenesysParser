@@ -7,11 +7,10 @@ setup(name='GenesysParser',
       description='Client to read and parse accession (MCPD passport) information from GENESYS.',
       url='https://github.com/PBR/GenesysParser',
       author='Eliana Papoutsoglou',
-      author_email='evangelia.papoutsoglou@wur.nl',
       license='MIT',
       packages=['GenesysParser'],
       install_requires=[
-          'requests'
+          'requests', 'mock'
       ],
       include_package_data=True,
       zip_safe=False

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import requests
 import copy
-from .ItemGenesys import ItemGenesys
-from .logger import *
-from . import config
+import codecs
+from ItemGenesys import ItemGenesys
+from logger import *
+import config
 
 
 class GenesysParser(object):
@@ -29,6 +31,7 @@ class GenesysParser(object):
 
         self.headers = {'Content-Type': 'application/json',
                         'Referer': 'http://ecpgr.cgn.wur.nl/eupotato/test.html'}
+        self.status = 0
         self.totalElements = 0
         self.totalPages = 0
         self.last = False
@@ -43,7 +46,7 @@ class GenesysParser(object):
             :return: list(ItemGenesys)
         """
         if page is not None:
-            self.body['startAt'] = page if page < 0 else 1
+            self.body['startAt'] = page if page > 0 else 1
         else:
             page = 1
         if size is not None:
@@ -52,6 +55,8 @@ class GenesysParser(object):
         else:
             size = 50
         response = requests.post(self.url, json=self.body, headers=self.headers)
+        self.status = response.status_code
+        GenesysParser.log.info('Response status: ' + str(self.status))
         response = json.loads(response.text)
         entries = list()
         try:
@@ -92,9 +97,53 @@ class GenesysParser(object):
         return self.results
 
 
+    def fetch2json(self):
+        """
+            Get the full result for a query, then store the response objects
+            into a Json file for later retrieval. Also useful for debugging
+            queries with more pages in their response.
+        :return:
+        """
+        self.submitReq(page=1, size=50)
+        GenesysParser.log.info('Genesys2json - total pages: %d' % \
+                                self.totalPages)
+        GenesysParser.log.info('Genesys2json - total elements: %d' % \
+                                self.totalElements)
+        currentPage = 1
+        self.last = False
+        results = list()
+        while not self.last:
+            try:
+                self.body['startAt'] = currentPage
+                GenesysParser.log.info('Current page: %d' % currentPage)
+                response = requests.post(self.url, json=self.body, headers=self.headers)
+                resp_json = json.loads(response.text)
+                results += copy.deepcopy(resp_json['content'])
+                self.last = resp_json['last']
+                currentPage += 1
+                if currentPage == 5: break
+            except KeyError:
+                GenesysParser.log.info('No results.')
+                self.totalElements, self.totalPages, results = 0, 0, list()
+
+        with codecs.open('results.txt', 'w', 'utf-8-sig') as f:
+            json.dump(results, f)
+        return results
+
+    def readFromJson(self):
+        res = list()
+        with codecs.open('results.txt', 'r', 'utf-8-sig') as f:
+            jsonItems = json.load(f)
+            res = [ItemGenesys(x) for x in jsonItems]
+        self.results = res
+        return res
+
+
 if __name__ == '__main__':
     # params = {'acceNumb': ['PI 340908']}
-    params = {'crop': ['tomato']}
+    # params = {'crop': ['tomato']}
+    # params = {'acceNumb': ['CPYC 0']}
+    params = {'institute.code': ['NLD037'], 'taxonomy.genus': ['Solanum']}
     if 0:
         a = GenesysParser(params)
         # Fetch page 1 and limit to 10 results
@@ -102,9 +151,27 @@ if __name__ == '__main__':
         for item in a.results:
             GenesysParser.log.debug(item)
 
-    if 1:
+    if 0:
         a = GenesysParser(params)
         for x in a.fetchAll():
             print(x)
         print(len(a.results))
+
+    if 1:
+        write_phase = False
+        read_phase = not write_phase
+        if write_phase:
+            w = GenesysParser(params)
+            w.fetch2json()
+        if read_phase:
+            r = GenesysParser({})
+            items = r.readFromJson()
+            genusspecies = list()
+            for i in items:
+                genusspecies.append((i.genus, i.species))
+            genusspecies = set(genusspecies)
+            for i in genusspecies:
+                print (i[0] + ' ' + i[1])
+
+    GenesysParser.log.info('Done.')
 

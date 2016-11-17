@@ -3,7 +3,7 @@
 import copy
 from datetime import datetime
 import re
-from .logger import *
+from logger import *
 
 
 class ItemGenesys(object):
@@ -65,12 +65,18 @@ class ItemGenesys(object):
         temp_aliases = [self.cleanUnprintables(x) for x in self.aliases]
         if temp_aliases != self.aliases:
             self.encodingIssues = True
-        return ('ItemGenesys(accessionID=%s, collectionDate=%s, ' +
+        return ('test_ItemGenesys(accessionID=%s, collectionDate=%s, ' +
                 'otherNames=[%s], genus=%s, species=%s, instituteCode=%s, ' +
                 'collectionSite=%s)') % \
                (self.accessionID, self.collectionDate,
                 ', '.join(temp_aliases), self.genus, self.species,
                 self.instituteCode, self.collectionSite)
+
+    def __eq__(self, other):
+        return self.accessionID == other.accessionID
+
+    def __ne__(self, other):
+        return not self.__eq__(self, other)
 
     @staticmethod
     def parseDate(tempDate):
