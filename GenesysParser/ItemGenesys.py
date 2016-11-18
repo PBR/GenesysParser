@@ -52,7 +52,8 @@ class ItemGenesys(object):
 
         try:
             self.aliases = set([x['name'] for x in item['aliases']
-                                if x['type'] == 'ACCENAME'])
+                                if x['type'] in ['ACCENAME', 'OTHERNUMB']
+                                ])
             self.aliases = tuple(self.aliases)
         except TypeError:
             self.aliases = tuple()
@@ -65,7 +66,7 @@ class ItemGenesys(object):
         temp_aliases = [self.cleanUnprintables(x) for x in self.aliases]
         if temp_aliases != self.aliases:
             self.encodingIssues = True
-        return ('test_ItemGenesys(accessionID=%s, collectionDate=%s, ' +
+        return ('ItemGenesys(accessionID=%s, collectionDate=%s, ' +
                 'otherNames=[%s], genus=%s, species=%s, instituteCode=%s, ' +
                 'collectionSite=%s)') % \
                (self.accessionID, self.collectionDate,
@@ -77,6 +78,10 @@ class ItemGenesys(object):
 
     def __ne__(self, other):
         return not self.__eq__(self, other)
+
+    def __hash__(self):
+        return hash(self.accessionID)
+        # return hash(self.__repr__())
 
     @staticmethod
     def parseDate(tempDate):

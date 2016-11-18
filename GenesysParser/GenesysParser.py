@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import requests
 import copy
 import codecs
@@ -16,7 +15,7 @@ class GenesysParser(object):
     """
     log = logging.getLogger(__name__)
 
-    def __init__(self, cFilter):
+    def __init__(self, cFilter={}):
         """
             Instantiate a GenesysRequest with the desired query parameters.
             :param cFilter: dict
@@ -97,7 +96,7 @@ class GenesysParser(object):
         return self.results
 
 
-    def fetch2json(self):
+    def fetch2json(self, filename):
         """
             Get the full result for a query, then store the response objects
             into a Json file for later retrieval. Also useful for debugging
@@ -126,13 +125,13 @@ class GenesysParser(object):
                 GenesysParser.log.info('No results.')
                 self.totalElements, self.totalPages, results = 0, 0, list()
 
-        with codecs.open('results.txt', 'w', 'utf-8-sig') as f:
+        with codecs.open(filename, 'w', 'utf-8-sig') as f:
             json.dump(results, f)
         return results
 
-    def readFromJson(self):
+    def readFromJson(self, filename):
         res = list()
-        with codecs.open('results.txt', 'r', 'utf-8-sig') as f:
+        with codecs.open(filename, 'r', 'utf-8-sig') as f:
             jsonItems = json.load(f)
             res = [ItemGenesys(x) for x in jsonItems]
         self.results = res
@@ -141,10 +140,13 @@ class GenesysParser(object):
 
 if __name__ == '__main__':
     # params = {'acceNumb': ['PI 340908']}
-    # params = {'crop': ['tomato']}
     # params = {'acceNumb': ['CPYC 0']}
-    params = {'institute.code': ['NLD037'], 'taxonomy.genus': ['Solanum']}
-    if 0:
+    # params = {'crop': ['tomato']}
+    params = {
+                'institute.code': ['NLD037'],
+                'crops': ['tomato']
+              }
+    if 1:
         a = GenesysParser(params)
         # Fetch page 1 and limit to 10 results
         a.submitReq(size=10, page=1)
@@ -156,22 +158,6 @@ if __name__ == '__main__':
         for x in a.fetchAll():
             print(x)
         print(len(a.results))
-
-    if 1:
-        write_phase = False
-        read_phase = not write_phase
-        if write_phase:
-            w = GenesysParser(params)
-            w.fetch2json()
-        if read_phase:
-            r = GenesysParser({})
-            items = r.readFromJson()
-            genusspecies = list()
-            for i in items:
-                genusspecies.append((i.genus, i.species))
-            genusspecies = set(genusspecies)
-            for i in genusspecies:
-                print (i[0] + ' ' + i[1])
 
     GenesysParser.log.info('Done.')
 

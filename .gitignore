@@ -6,6 +6,8 @@ GenesysParser/info.log
 GenesysParser/errors.log
 GenesysParser/debug.log
 GenesysParser/results.txt
+app_duplication/USDA.txt
+app_duplication/CGN.txt
 
 # PyCharm files
 .idea/
